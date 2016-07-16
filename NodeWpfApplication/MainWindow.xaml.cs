@@ -150,7 +150,6 @@ namespace NodeWpfApplication
         {
             //get id from combobox
             var id = Convert.ToUInt32( RemoveComboBox.SelectedValue);
-            Debug.WriteLine(id);
             //remove id from combobox
             RemoveComboBox.Items.Remove(RemoveComboBox.SelectedValue);
             //defince a node object by id
@@ -176,7 +175,45 @@ namespace NodeWpfApplication
         //cancel editnode button
         private void EditNodeButton_Click(object sender, RoutedEventArgs e)
         {
+            //get id from combobox
+            var id = Convert.ToUInt32(EditComboBox.SelectedValue);
 
+            if (EditComboBox.SelectedValue != null)
+            {
+                // defince a node object by id
+                var node = nodeManager.GetNode(id);
+
+                if (OnlineRadioButton.IsChecked==true)
+                {
+                    //set the node online
+                    node.SetOnline();
+                    //refresh the list view after changed
+                    NodeListView.Items.Refresh();
+
+                    //alarm 
+                    AlarmUser(node.ConnectedClients);
+                }
+                if (OfflineRadioButton.IsChecked == true)
+                {
+                    //set the node offline
+                    node.SetOffline();
+                    //refresh the list view after changed
+                    NodeListView.Items.Refresh();
+                }
+            }
+            
         }
+
+        //alarm
+        public void AlarmUser(uint connectedClients)
+        {
+            //set maxim Connected Clients to 100
+            if (connectedClients > 100)
+            {
+                MessageBox.Show("Connected clients has the maximum numbers: " +connectedClients);
+            }
+        }
+
+
     }
 }
