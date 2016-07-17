@@ -61,5 +61,31 @@ namespace NodeManagement
         {
             return _nodes;
         }
+        //Alarm user funtion
+        public void AlarmUser(uint nodeId, uint connectedClients, float uploadUtilization, float downloadUtilization, float errorRate)
+        {
+            var existingNode = GetNode(nodeId);
+            
+            //set maxium connected clients
+            if (existingNode.ConnectedClients> connectedClients)
+            {
+                throw new Exception(string.Format("Connected clients exceed maximum limits: {0}. NodeId: {1}\n", connectedClients, nodeId));
+            }
+            //set maxium Upload Utilization
+            if (existingNode.UploadUtilization > uploadUtilization)
+            {
+                throw new Exception(string.Format("Upload utilization exceed maximum limits: {0}. NodeId: {1}\n", uploadUtilization, nodeId));
+            }
+            //set maxium DownloadUtilization
+            if (existingNode.UploadUtilization > downloadUtilization)
+            {
+                throw new Exception(string.Format("Download utilization exceed maximum limits: {0}. NodeId: {1}\n", downloadUtilization, nodeId));
+            }
+            //set maxium ErrorRate
+            if (existingNode.ErrorRate > errorRate)
+            {
+                throw new Exception(string.Format("Error rate exceed maximum limits: {0}. NodeId: {1}\n", errorRate, nodeId));
+            }
+        }
     }
 }

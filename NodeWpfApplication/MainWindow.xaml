@@ -11,7 +11,7 @@
         ResizeMode="CanResizeWithGrip"
         BorderThickness="0" 
         WindowStartupLocation="CenterScreen"
-        Title="MainWindow" Height="600" Width="1200">
+        Title="MainWindow" Height="640" Width="1300">
     <Window.Resources>
         <Style x:Key="HeaderTextBlock" TargetType="TextBlock">
             <Setter Property="FontSize" Value="24"/>
@@ -87,12 +87,14 @@
         </Grid.Background>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2.4*"/>
         </Grid.ColumnDefinitions>
         <Border>
             <StackPanel><!--Left Side Panel-->
                 <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -111,6 +113,7 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="1.2*"/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel>
                                     <Border Name="AddButtonBorder">
@@ -125,6 +128,11 @@
                                 <StackPanel Grid.Column="2">
                                     <Border Name="SetOnlineButtonBorder">
                                         <Button Name="ShowEditNodeArea" Content="Update" Height="30" Foreground="White" Style="{StaticResource NormalButton}" Click="ShowEditNodeArea_Click"/>
+                                    </Border>
+                                </StackPanel>
+                                <StackPanel Grid.Column="3">
+                                    <Border Name="SetMetricsButtonBorder">
+                                        <Button Name="ShowMetricsArea" Content="Set Metrics" Height="30" Foreground="White" Style="{StaticResource NormalButton}" Click="ShowMetricsArea_Click"/>
                                     </Border>
                                 </StackPanel>
                             </Grid>
@@ -179,9 +187,10 @@
                         </Grid>
                     </StackPanel>
                     <StackPanel Grid.Row="3" Name="EditNodeAreaStackPanel" Visibility="Collapsed">
-
                         <Grid>
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
@@ -194,7 +203,7 @@
                                 <TextBlock Text="Node ID:" Style="{StaticResource PropertyTextBlock}"/>
                             </StackPanel>
                             <StackPanel Grid.Column="1">
-                                <ComboBox Name="EditComboBox" Height="30" Margin="10,0,10,0"/>
+                                <ComboBox Name="EditComboBox" Height="35" Margin="10,0,10,0"/>
                             </StackPanel>
                             <StackPanel  Grid.Row="1" Margin="0,10,0,10">
                                 <TextBlock Text="Online Status:" Style="{StaticResource PropertyTextBlock}"/>
@@ -202,7 +211,6 @@
                             <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,10,0,10" Orientation="Horizontal">
                                 <RadioButton x:Name="OnlineRadioButton" Content="Online" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="White" IsChecked="True"/>
                                 <RadioButton x:Name="OfflineRadioButton" Content="Offline" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="White"/>
-
                             </StackPanel>
                             <StackPanel Grid.Row="2">
                                 <Button Name="CancelEditNodeButton" Content="Cancel" Style="{StaticResource SmallButton}" HorizontalAlignment="Right" Click="CancelEditNodeButton_Click"/>
@@ -212,7 +220,69 @@
                             </StackPanel>
                         </Grid>
                     </StackPanel>
-                    <StackPanel Grid.Row="4">
+                    <StackPanel Grid.Row="4" Name="SetMetricsAreaStackPanel" Visibility="Collapsed">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel >
+                                <TextBlock Text="Node ID:" Style="{StaticResource PropertyTextBlock}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <ComboBox Name="SetMetricsComboBox" Height="35" Margin="10,0,10,0"/>
+                            </StackPanel>
+                            <StackPanel  Grid.Row="1" Margin="0,10,0,10">
+                                <TextBlock Text="Max Connected Clients:" Style="{StaticResource PropertyTextBlock}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,10,0,10">
+                                <TextBox Name="MaxConnectedClientsTextBox" Style="{StaticResource PropertyTextBox}"/>
+                            </StackPanel>
+                            <StackPanel  Grid.Row="2" Margin="0,10,0,10">
+                                <TextBlock Text="Max Upoload:" Style="{StaticResource PropertyTextBlock}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,10,0,10">
+                                <TextBox Name="MaxUploadTextBox" Style="{StaticResource PropertyTextBox}"/>
+                            </StackPanel>
+                            <StackPanel  Grid.Row="3" Margin="0,10,0,10">
+                                <TextBlock Text="Max Downoload:" Style="{StaticResource PropertyTextBlock}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="3" Grid.Column="1" Margin="0,10,0,10">
+                                <TextBox Name="MaxDownloadTextBox" Style="{StaticResource PropertyTextBox}"/>
+                            </StackPanel>
+                            <StackPanel  Grid.Row="4" Margin="0,10,0,10">
+                                <TextBlock Text="Max Error Rate:" Style="{StaticResource PropertyTextBlock}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="4" Grid.Column="1" Margin="0,10,0,10">
+                                <TextBox Name="MaxErrorRateTextBox" Style="{StaticResource PropertyTextBox}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="5">
+                                <Button Name="CancelSetMetricsButton" Content="Cancel" Style="{StaticResource SmallButton}" HorizontalAlignment="Right" Click="CancelSetMetricsButton_Click"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="5" Grid.Column="1">
+                                <Button Name="EditSetMetricsButton" Content="Set" Style="{StaticResource SmallButton}"  HorizontalAlignment="Left" Click="SetMetricsButton_Click"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Grid.Row="5">
+                        <Border Height="300" BorderBrush="White" BorderThickness="1" Margin="10">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                <StackPanel>
+                                    <TextBlock Text="Logs:" Foreground="White" Margin="10"/>
+                                    <TextBlock Name="StatusInfoTextBlock" FontSize="14" Foreground="White" Margin="10"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Grid.Row="6">
                         <Button Name="ExitButton" Content="Exit" Style="{StaticResource SmallButton}" HorizontalAlignment="Left" Click="ExitButton_Click"/>
                     </StackPanel>
                 </Grid>
@@ -226,6 +296,12 @@
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="Foreground" Value="LightGray"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsOnline}" Value="True">
+                                    <Setter Property="Foreground" Value="Lime" />
+                                </DataTrigger>
+                            </Style.Triggers>
                         </Style>
                     </ListView.ItemContainerStyle>
                     <ListView.View>

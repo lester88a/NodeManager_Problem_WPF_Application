@@ -52,18 +52,27 @@ namespace NodeManagement
         public void SetOnline()
         {
             IsOnline = true;
-
+            OnlineTime = DateTime.Now;//update time
             SimulateRandomMetrics();
         }
 
         public void SetOffline()
         {
             IsOnline = false;
-
+            OnlineTime = DateTime.Now; //update time
             ResetMetrics();
         }
+
+        //set maximum values of Metrics
+        public void SetMaxMetricsValue(uint connectedClients, float uploadUtilization, float downloadUtilization, float errorRate)
+        {
+            ConnectedClients = connectedClients;
+            UploadUtilization = uploadUtilization;
+            DownloadUtilization = downloadUtilization;
+            ErrorRate = errorRate;
+        }
         #endregion
-        
+
         #region Private Methods
         private void ResetMetrics()
         {

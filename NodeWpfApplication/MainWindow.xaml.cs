@@ -25,21 +25,23 @@ namespace NodeWpfApplication
     /// </summary>
     public partial class MainWindow : Window
     {
-        private uint NodeId;
-        private string City;
-        private NodeManager nodeManager;
+        private uint _NodeId;
+        private string _City;
+        private uint _ConnectedClients;
 
-        private ObservableCollection<INode> NodeListViewItems;
+        private NodeManager _NodeManager;
+
+        private ObservableCollection<INode> _NodeListViewItems;
 
         public MainWindow()
         {
             InitializeComponent();
             //Initialize NodeManager
-            nodeManager = new NodeManager();
+            _NodeManager = new NodeManager();
             //Initialize NodeListViewItems
-            NodeListViewItems = new ObservableCollection<INode>();
+            _NodeListViewItems = new ObservableCollection<INode>();
             //assign NodeListViewItems to NodeListView
-            NodeListView.ItemsSource = NodeListViewItems;
+            NodeListView.ItemsSource = _NodeListViewItems;
             
         }
 
@@ -58,6 +60,7 @@ namespace NodeWpfApplication
             AddNodeAreaGrid.Visibility = Visibility.Visible;
             EditNodeAreaStackPanel.Visibility = Visibility.Collapsed;
             RemoveNodeAreaStackPanel.Visibility = Visibility.Collapsed;
+            SetMetricsAreaStackPanel.Visibility = Visibility.Collapsed;
             //give the button border color when is actived
             AddButtonBorder.BorderBrush = new SolidColorBrush(Colors.White);
             AddButtonBorder.BorderThickness = new Thickness(0, 0, 0, 3);
@@ -65,6 +68,8 @@ namespace NodeWpfApplication
             RemoveButtonBorder.BorderThickness = new Thickness(0, 0, 0, 0);
             SetOnlineButtonBorder.BorderBrush = new SolidColorBrush(Colors.White);
             SetOnlineButtonBorder.BorderThickness = new Thickness(0, 0, 0, 0);
+            SetMetricsButtonBorder.BorderBrush = new SolidColorBrush(Colors.White);
+            SetMetricsButtonBorder.BorderThickness = new Thickness(0, 0, 0, 0);
         }
         //click to show remove node area
         private void ShowRemoveNodeArea_Click(object sender, RoutedEventArgs e)
@@ -72,8 +77,9 @@ namespace NodeWpfApplication
             AddNodeAreaGrid.Visibility = Visibility.Collapsed;
             EditNodeAreaStackPanel.Visibility = Visibility.Collapsed;
             RemoveNodeAreaStackPanel.Visibility = Visibility.Visible;
+            SetMetricsAreaStackPanel.Visibility = Visibility.Collapsed;
             //get all nodes to combobox
-            foreach (var item in NodeListViewItems)
+            foreach (var item in _NodeListViewItems)
             {
                 RemoveComboBox.Items.Add(item.NodeId);
             }
@@ -84,6 +90,8 @@ namespace NodeWpfApplication
             RemoveButtonBorder.BorderThickness = new Thickness(0, 0, 0, 3);
             SetOnlineButtonBorder.BorderBrush = new SolidColorBrush(Colors.White);
             SetOnlineButtonBorder.BorderThickness = new Thickness(0,0,0,0);
+            SetMetricsButtonBorder.BorderBrush = new SolidColorBrush(Colors.White);
+            SetMetricsButtonBorder.BorderThickness = new Thickness(0, 0, 0, 0);
         }
         //click to show edit node area
         private void ShowEditNodeArea_Click(object sender, RoutedEventArgs e)
@@ -91,8 +99,9 @@ namespace NodeWpfApplication
             AddNodeAreaGrid.Visibility = Visibility.Collapsed;
             EditNodeAreaStackPanel.Visibility = Visibility.Visible;
             RemoveNodeAreaStackPanel.Visibility = Visibility.Collapsed;
+            SetMetricsAreaStackPanel.Visibility = Visibility.Collapsed;
             //get all nodes to combobox
-            foreach (var item in NodeListViewItems)
+            foreach (var item in _NodeListViewItems)
             {
                 EditComboBox.Items.Add(item.NodeId);
             }
@@ -103,7 +112,33 @@ namespace NodeWpfApplication
             RemoveButtonBorder.BorderThickness = new Thickness(0, 0, 0, 0);
             SetOnlineButtonBorder.BorderBrush = new SolidColorBrush(Colors.White);
             SetOnlineButtonBorder.BorderThickness = new Thickness(0, 0, 0, 3);
+            SetMetricsButtonBorder.BorderBrush = new SolidColorBrush(Colors.White);
+            SetMetricsButtonBorder.BorderThickness = new Thickness(0, 0, 0, 0);
         }
+        //click to show metrics area
+        private void ShowMetricsArea_Click(object sender, RoutedEventArgs e)
+        {
+            AddNodeAreaGrid.Visibility = Visibility.Collapsed;
+            EditNodeAreaStackPanel.Visibility = Visibility.Collapsed;
+            RemoveNodeAreaStackPanel.Visibility = Visibility.Collapsed;
+            SetMetricsAreaStackPanel.Visibility = Visibility.Visible;
+            //get all nodes to combobox
+            foreach (var item in _NodeListViewItems)
+            {
+                SetMetricsComboBox.Items.Add(item.NodeId);
+            }
+            //give the button border color when is actived
+            AddButtonBorder.BorderBrush = new SolidColorBrush(Colors.White);
+            AddButtonBorder.BorderThickness = new Thickness(0, 0, 0, 0);
+            RemoveButtonBorder.BorderBrush = new SolidColorBrush(Colors.White);
+            RemoveButtonBorder.BorderThickness = new Thickness(0, 0, 0, 0);
+            SetOnlineButtonBorder.BorderBrush = new SolidColorBrush(Colors.White);
+            SetOnlineButtonBorder.BorderThickness = new Thickness(0, 0, 0, 0);
+            SetMetricsButtonBorder.BorderBrush = new SolidColorBrush(Colors.White);
+            SetMetricsButtonBorder.BorderThickness = new Thickness(0, 0, 0, 3);
+        }
+
+
         //add node button
         private void AddNodeButton_Click(object sender, RoutedEventArgs e)
         {
@@ -112,22 +147,26 @@ namespace NodeWpfApplication
                 //local variables
                 var rnd = new Random();
                 //set NodeId auto increase
-                NodeId++;
+                _NodeId++;
                 //get city from user input
-                City = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(CityTextBox.Text); //capitalize the first letter 
+                _City = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(CityTextBox.Text); //capitalize the first letter 
                 
                 //add a new node
-                nodeManager.AddNode(new Node(NodeId, City, rnd));
-                var node = nodeManager.GetNode(NodeId);
+                _NodeManager.AddNode(new Node(_NodeId, _City, rnd));
+                var node = _NodeManager.GetNode(_NodeId);
                 //assign node to NodeListViewItems
-                NodeListViewItems.Add(node);
+                _NodeListViewItems.Add(node);
 
                 //celar CityTextBox after noded added
                 CityTextBox.Text = "";
+
+                //show status info
+                StatusInfoTextBlock.Text += "Node: "+ node.NodeId + " add successful!\n";
             }
             catch (Exception er)
             {
-                MessageBox.Show("Error:\n" + er);
+                //show status info
+                StatusInfoTextBlock.Text += "Error:\n" + er + "\n";
             }
             
         }
@@ -153,13 +192,16 @@ namespace NodeWpfApplication
             //remove id from combobox
             RemoveComboBox.Items.Remove(RemoveComboBox.SelectedValue);
             //defince a node object by id
-            var node = nodeManager.GetNode(id);
+            var node = _NodeManager.GetNode(id);
 
             //remove node from nodeManager
-            nodeManager.RemoveNode(id);
+            _NodeManager.RemoveNode(id);
 
             //remove node from NodeListViewItems
-            NodeListViewItems.Remove(node);
+            _NodeListViewItems.Remove(node);
+
+            //show status info
+            StatusInfoTextBlock.Text += "Node: " + node.NodeId + " removed successful!\n";
         }
         //cancel removenode button
         private void CancelRemoveNodeButton_Click(object sender, RoutedEventArgs e)
@@ -167,53 +209,84 @@ namespace NodeWpfApplication
             RemoveNodeAreaStackPanel.Visibility = Visibility.Collapsed;
         }
 
-        // edit node button
+        //cancel editnode button
         private void CancelEditNodeButton_Click(object sender, RoutedEventArgs e)
         {
             EditNodeAreaStackPanel.Visibility = Visibility.Collapsed;
         }
-        //cancel editnode button
+        // edit node button
         private void EditNodeButton_Click(object sender, RoutedEventArgs e)
         {
-            //get id from combobox
-            var id = Convert.ToUInt32(EditComboBox.SelectedValue);
-
-            if (EditComboBox.SelectedValue != null)
+            try
             {
-                // defince a node object by id
-                var node = nodeManager.GetNode(id);
+                //get id from combobox
+                var id = Convert.ToUInt32(EditComboBox.SelectedValue);
 
-                if (OnlineRadioButton.IsChecked==true)
+                if (EditComboBox.SelectedValue != null)
                 {
-                    //set the node online
-                    node.SetOnline();
-                    //refresh the list view after changed
-                    NodeListView.Items.Refresh();
+                    // defince a node object by id
+                    var node = _NodeManager.GetNode(id);
 
-                    //alarm 
-                    AlarmUser(node.ConnectedClients);
+                    if (OnlineRadioButton.IsChecked == true)
+                    {
+                        //set the node online
+                        node.SetOnline();
+
+                        //refresh the list view after changed
+                        NodeListView.Items.Refresh();
+
+                        //alarm 
+                        //nodeManager.AlarmUser(id,);
+
+                    }
+                    if (OfflineRadioButton.IsChecked == true)
+                    {
+                        //set the node offline
+                        node.SetOffline();
+                        //refresh the list view after changed
+                        NodeListView.Items.Refresh();
+                    }
+
+                    //show status info
+                    StatusInfoTextBlock.Text += "Node: " + node.NodeId + " update successful!\n";
                 }
-                if (OfflineRadioButton.IsChecked == true)
-                {
-                    //set the node offline
-                    node.SetOffline();
-                    //refresh the list view after changed
-                    NodeListView.Items.Refresh();
-                }
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("Error:\n" + er);
+                //show status info
+                StatusInfoTextBlock.Text += "Error:\n" + er + "\n";
             }
             
         }
-
-        //alarm
-        public void AlarmUser(uint connectedClients)
+        //Set Metrics Button
+        private void SetMetricsButton_Click(object sender, RoutedEventArgs e)
         {
-            //set maxim Connected Clients to 100
-            if (connectedClients > 100)
+            //get id from combobox
+            var id = Convert.ToUInt32(SetMetricsComboBox.SelectedValue);
+            var maxClients = Convert.ToUInt32(MaxConnectedClientsTextBox.Text);
+            var maxUpload = (float)Convert.ToDecimal(MaxUploadTextBox.Text);
+            var maxDownload = (float)Convert.ToDecimal(MaxDownloadTextBox.Text);
+            var maxErrorRate = (float)Convert.ToDecimal(MaxErrorRateTextBox.Text);
+            if (SetMetricsComboBox.SelectedValue != null)
             {
-                MessageBox.Show("Connected clients has the maximum numbers: " +connectedClients);
+                // defince a node object by id
+                var node = _NodeManager.GetNode(id);
+
+                //Set MaxMetricsValuee
+                node.SetMaxMetricsValue(maxClients, maxUpload, maxDownload, maxErrorRate);
+
+                //refresh the list view after changed
+                NodeListView.Items.Refresh();
+
+                //show status info
+                StatusInfoTextBlock.Text += "Node: " + node.NodeId + " set max value successful!\n";
             }
         }
-
-
+        //cancel SetMetrics button
+        private void CancelSetMetricsButton_Click(object sender, RoutedEventArgs e)
+        {
+            SetMetricsAreaStackPanel.Visibility = Visibility.Collapsed;
+        }
     }
 }

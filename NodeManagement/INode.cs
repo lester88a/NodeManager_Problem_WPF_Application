@@ -52,5 +52,9 @@ namespace NodeManagement
         /// </summary>
         /// <returns></returns>
         void SetOffline();
+        /// <summary>
+        /// Bring the node online
+        /// </summary>
+        void SetMaxMetricsValue(uint connectedClients, float uploadUtilization, float downloadUtilization, float errorRate);
     }
 }
